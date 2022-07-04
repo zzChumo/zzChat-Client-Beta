@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<meta name="theme-color" content="#00bb99">
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  <meta charset="utf-8">
+  <title>XChat</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="imgs/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="imgs/favicon.ico">
+  <link rel="apple-touch-icon" sizes="36x36" href="imgs/36x36.png" />
+  <link rel="apple-touch-icon" sizes="48x48" href="imgs/48x48.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="imgs/72x72.png" />
+  <link rel="apple-touch-icon" sizes="96x96" href="imgs/96x96.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="imgs/144x144.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="imgs/192x192.png" />
+
+  <link rel="stylesheet" href="style.css">
+  <link id="scheme-link" rel="stylesheet" href="schemes/atelier-dune.css">
+  <link id="clear-scheme" rel="stylesheet" href="">
+
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="vendor/remarkable-katex/remarkableKatex.min.js"></script>
+
+  <script src="vendor/hljs/highlight.min.js"></script>
+  <link id="highlight-link" rel="stylesheet" href="vendor/hljs/styles/hybrid.min.css">
+  <script src="vendor/remarkable/remarkable.min.js"></script>
+  <style>
+    .message p {
+      word-wrap: break-word;
+
+    }
+    .message {
+      padding-top: 1rem;
+    }
+    .px10 {
+      font-size: 10px;
+    }
+    .px12 {
+      font-size: 12px;
+    }
+    .px14 {
+      font-size: 14px;
+    }
+    .px16 {
+      font-size: 16px;
+    }
+    .px18 {
+      font-size: 18px;
+    }
+    .px20 {
+      font-size: 20px;
+    }
+  </style>
+          <style>
+            body{
+                font-family: "Google Sans";
+                margin: 0;
+                letter-spacing: 1px;
+            }
+
+            a.z:hover {
+                color: #f1f1f1;
+                background-color: #00aa88;
+            }
+
+            a.float:hover {
+                color: #f1f1f1;
+                background-color: #00aa88;
+            }
+
+            a.float{
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #fff;
+                background-color: #00ccaa;
+                border: 0 solid #00ccaa;
+                border-radius: 50px;
+                box-shadow: 0px 3px  3px #00000066;
+                bottom: 30px;
+                right: 30px;
+                position: fixed;
+                transition: all 0.3s linear;
+            }
+
+            @font-face {
+                font-family: Roboto;
+                src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxK.woff2);
+            }
+
+            p.a{
+                font-size: large;
+            }
+
+            a:hover {
+                color: #fff;
+                background-color: #aaa;
+            }
+
+            p.b{
+                padding-left: 20px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-right: 20px;
+                color: #333;
+            }
+
+            div.a{  /*警告框*/
+                text-align: center;
+                color: #ff3333;
+                background: #ffaaaa;
+                border: 2px solid #ff3333;
+                border-radius: 20px;
+                margin: 10px 20px;
+                padding: 15px 30px 30px;
+                box-shadow: 0px 3px  3px #00000066;
+            }
+
+            div.b{  /*提示框*/
+                text-align: center;
+                color: #3333ff;
+                background: #aaaaff;
+                border: 2px solid #3333ff;
+                border-radius: 20px;
+                margin: 10px 20px;
+                padding: 15px 30px 30px;
+                box-shadow: 0px 3px  3px #00000066;
+            }
+
+            div.d{
+                text-align: center;
+                font-size: small;
+                color: #333;
+            }
+
+            div.c{
+                padding-left: 20px;
+                padding-right: 20px;
+                font-size: large;
+            }
+
+            div.e{
+                color: #333333;
+            }
+
+            a.a{
+                color: #ffffff;
+            }
+
+            a.c{
+                color: #555;
+                padding-left: 20px;
+                font-size: x-small;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            a.b{
+                color: #0090d8;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            @font-face {
+                font-family: 'Material Icons';
+                font-style: normal;
+                font-weight: 400;
+                src: url(https://fonts.gstatic.com/s/materialicons/v127/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+            }
+
+            @font-face{
+                font-family: 'Google Sans';
+                src: url(https://fonts.gstatic.com/s/googlesans/v42/4UasrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RPjIUvQ.woff2);
+            }
+		
+		    ul.topnav {    /*该文档将所有ul标签均作为标题栏处理。如有需要请给此项加class。*/
+    		    list-style-type: none;
+	    	    margin: 0;
+		        padding: 0;
+		        overflow: hidden;
+    		    background-color: #00ccaa;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                box-shadow: 0px 3px  3px #00000066;
+                letter-spacing: 0px;
+                }
+		
+		    li {
+		        float: left;
+		    }
+		
+		    li a, .dropbtn {    /*注意：如果你使用中文标题，请将下文li标签中a标签中的class属性删除，使用英文标题请忽略此注释*/
+    		    display: inline-block;
+	    	    color: white;
+		        text-align: center;
+		        padding: 14px 15px;
+    		    text-decoration: none;
+    		    font-size: 19px;
+	    	}
+
+            a.material-iconstop {   /*Material Design图标支持（仅标题栏）*/
+                font-family: 'Material Icons';
+                display: inline-block;
+	    	    color: white;
+	    	    font-size: 24px;    /*如标题栏内包含中文则需要将此项改为26px*/
+		        text-align: center;
+		        padding: 16px 15px;
+    		    text-decoration: none;
+                border-radius: 50px
+            }
+
+            a.top {
+    		    display: inline-block;
+	    	    color: white;
+	    	    font-size: 19px;
+		        text-align: center;
+		        padding: 16px 15px;
+    		    text-decoration: none;
+	    	}
+		
+    		li a:hover, .dropdown:hover, .dropbtn {
+	    	    background-color: #00ccaa;
+		    }
+
+            a.material-iconstop:hover{
+                background-color: #00aa88;
+            }
+
+            a.menu{
+                border-radius: 50px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            a.menu:hover{
+                background-color: #00aa88;
+            }
+		
+    		.dropdown {
+	    	    display: inline-block;
+		    }
+		
+		    .dropdown-content {
+    		    display: none;
+	    	    position: absolute;
+		        background-color: #f9f9f9;
+		        min-width: 160px;
+    		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    		    border-radius: 20px;
+	    	}
+		
+		    .dropdown-content a {
+		        color: #333;
+    		    padding: 12px 16px;
+	    	    text-decoration: none;
+		        display: block;
+                font-size: 15px;
+                border-radius: 20px;
+    		}
+		
+	    	.dropdown-content a:hover {background-color: #f1f1f1}
+		
+		    .dropdown:hover .dropdown-content {
+    		    display: block;
+	    	}
+
+            a{
+			    text-decoration: none;
+                transition: all 0.3s linear;
+		    }
+
+            img{
+                border: 0;
+                border-radius: 20px;
+            }
+
+            a.float:hover {
+                color: #f1f1f1;
+                background-color: #00aa88;
+            }
+
+            a.float{    /*浮空按钮*/
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #fff;
+                background-color: #00ccaa;
+                border: 0 solid #00ccaa;
+                border-radius: 50px;
+                box-shadow: 0px 3px  3px #00000066;
+                bottom: 30px;
+                right: 30px;
+                position: fixed;
+                transition: all 0.3s linear;
+            }
+
+            a.zcantuse:hover {
+                color: #fff;
+                background-color: #aaa;
+            }
+
+            a.zcantuse{    /*不可用的按钮*/
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #fff;
+                background-color: #aaa;
+                box-shadow: 0px 3px  3px #00000066;
+                border: 0 solid #aaa;
+                border-radius: 3px;
+                transition: all 0.3s linear;
+            }
+            
+            a.z:hover {
+                color: #f1f1f1;
+                background-color: #00aa88;
+            }
+
+            a.z{    /*按钮*/
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #fff;
+                background-color: #00ccaa;
+                box-shadow: 0px 3px  3px #00000066;
+                border: 0 solid #00ccaa;
+                border-radius: 3px;
+                transition: all 0.3s linear;
+            }
+
+            #panel{
+                padding: 20px;
+            }
+
+            div.e{
+                font-size: xx-large;
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+
+            div.f{
+                font-size: small;
+            }
+
+            #panel{
+                display: none;
+            }
+
+            div.h{
+                padding-left: 5px;
+            }
+        
+            p.z{
+                text-align: center;
+                font-size: small;
+            }
+
+            .sidenav {  /*侧边栏*/
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #fff;
+                overflow-x: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+                box-shadow: 0px 10px  10px #00000066;
+            }
+
+            .sidenav a {
+                padding: 8px 8px 8px 55px;
+                text-decoration: none;
+                font-size: 15px;
+                color: #555;
+                display: block;
+                transition: 0.3s;
+                border-radius: 50px;
+            }
+            
+            a.sidenav1{
+                padding: 15px 8px 15px 30px;
+                text-decoration: none;
+                font-size: 15px;
+                color: #555;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .sidenav a:hover, .offcanvas a:focus{
+                color: #555;
+            }
+
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 15px;
+                font-size: 20px;
+                margin-left: 50px;
+            }
+
+            div.sidenavimage{
+                padding-left: 5px;
+            }
+
+            .material-icons {
+                font-family: 'Material Icons';
+                font-weight: normal;
+            }        
+            
+            .title{
+                text-align: center;
+            }
+            
+            hr{
+                width: 85%;
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+        </style>
+        <script>
+            document.addEventListener('visibilitychange',function(){
+                if(document.visibilityState=='hidden'){
+                    normal_title=document.title;
+                    document.title='应用摸鱼中...';
+                }
+                else document.title=normal_title;
+            });    //当用户焦点离开时显示的网页标题
+            
+            function aHref(s){
+                window.location.href=s;
+            }   //为了最佳的视觉体验，请使用onclick="aHref('https://example')"以代替href属性。
+
+            function refresh(){
+                window.location.reload();
+            }    //网页刷新模块
+
+            $(document).ready(function(){
+                $("#flip").click(function(){
+                    $("#panel").slideToggle("slow");
+                });
+            });    //jQuery滑动模块，使用前请先自行添加jQuery的script标签
+
+            function adjustIframe(){
+                var ifm= document.getElementById("bi_iframe");
+                ifm.height=document.documentElement.clientHeight;
+                ifm.width=document.documentElement.clientWidth;
+            }    //iframe自适应大小模块
+
+            function openNav(){
+                document.getElementById('mySidenav').style.width='250px';
+            }
+
+            function closeNav(){
+                document.getElementById('mySidenav').style.width='0';
+            }    //侧边栏模块
+        </script>
+</head>
+
+<body id="body">
+            <ul class="topnav">
+            <li><a class="menu" onclick="openNav()">&#9776;</a></li>
+            <li><a class="top">zzChat</a></li><!--标题-->
+        </ul>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="sidenavimage"><img src="Demo.png" alt="icon" width="40%"></div>
+            <a class="sidenav1">zzChat</a>
+            <hr>
+            <br>
+            <a onclick="aHref('index.html')">首页</a>
+            <a onclick="aHref('chat.html?public')">公共频道</a>
+            <a onclick="aHref('https://www.zzchat.cf')">开发者</a>
+            <a onclick="aHref('https://app.zzchat.cf')">客户端</a>
+            <!--这里是侧边栏内容-->
+        </div>
+<br>
+<br>
+<br>
+<br>
+  <div id="player" style="display: none; width:100%; height:100%"></div>
+  <audio style="display: none" id="notify-sound" preload="auto" src="audio/notify.m4a">
+    <source src="audio/notify.m4a" type="audio/ogg">
+  </audio>
+  <article class="container">
+    <div id="messages" class="messages"></div>
+  </article>
+  <footer id="footer">
+    <div class="container">
+      <form id="chatform" class="message">
+        <textarea id="chatinput" type="text" autocomplete="off" autofocus></textarea>
+      </form>
+    </div>
+  </footer>
+  <nav id="sidebar">
+    <div id="sidebar-content" class="hidden">
+      <h3 style="margin-bottom: 0.3rem">账户：</h3>
+      <p>
+        <input id="auto-login" type="checkbox">
+        <label for="auto-login">下次自动登录</label>
+      </p>
+      <p>
+        <button type="button" id="clear-nick">清除用户信息</button>
+      </p>
+      <hr>
+      <h3>设置：</h3>
+      <h5>**部分需要刷新以生效**</h5>
+      <p>
+        <input id="pin-sidebar" type="checkbox">
+        <label for="pin-sidebar">固定边栏</label>
+      </p>
+      <p>
+        <input id="sound-switch" type="checkbox">
+        <label for="sound-switch">开启声音</label>
+      </p>
+      <p>
+        <input id="notify-switch" type="checkbox">
+        <label for="notify-switch">消息提示</label>
+      </p>
+      <p>
+        <input id="joined-left" type="checkbox" checked>
+        <label for="joined-left">加入/离开通知</label>
+      </p>
+      <p>
+        <input id="parse-latex" type="checkbox" checked>
+        <label for="parse-latex">开启数学公式</label>
+      </p>
+      <p>
+        <input id="syntax-highlight" type="checkbox" checked>
+        <label for="syntax-highlight">允许高亮</label>
+      </p>
+      <p>
+        <input id="allow-imgur" type="checkbox" checked>
+        <label for="allow-imgur" title="发送图片: ![标题](http://xq.kzw.ink/image.png)">允许图片</label>
+      </p>
+      <p>
+        <input id="add-old" type="checkbox" checked>
+        <label class="ao" for="add-old">记录我的信息</label>
+      </p>
+      <hr>
+      <p>
+      <h4>颜色模式</h4>
+      <select id="scheme-selector"></select>
+      </p>
+      <p>
+      <h4>高亮模式</h4>
+      <select id="highlight-selector"></select>
+      </p>
+      <p>
+      <h4>字体大小</h4>
+      <select id="font-selector">
+        <option value="px10">10px</option>
+        <option value="px12" selected>12px</option>
+        <option value="px14">14px</option>
+        <option value="px16">16px</option>
+        <option value="px18">18px</option>
+        <option value="px20">20px</option>
+      </select>
+      </p>
+      <p class="sb">
+        <h4 class="sb">显示聊天记录数量</h4>
+        <select id="old-selector" class="sb">
+          <option value="10">10条</option>
+          <option value="20" selected>20条</option>
+          <option value="30">30条</option>
+          <option value="40">40条</option>
+          <option value="50">50条</option>
+          <option value="100">所有</option>
+          <option value="1">今天所有</option>
+        </select>
+        </p>
+      <hr>
+      <p>
+        <button type="button" id="lay-video">一起看视频！</button>
+      </p>
+      <p>
+        <button type="button" id="set-bgimage">设置背景</button>
+      </p>
+      <p>
+        <button type="button" id="set-head">设置头像</button>
+      </p>
+      <!--p>
+        <button type="button" id="send-img">发送本地图片</button>
+      </p-->
+      <p>
+        <button type="button" id="clear-messages">清屏</button>
+      </p>
+      <hr>
+      <h4>在线用户</h4>
+      <p>(点击以邀请)</p>
+      <ul id="users"></ul>
+<br>
+<br>
+<br>
+<br>
+<br>
+    </div>
+  </nav>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="static/layer/layer.js"></script>
+  <script src="static/dplayer/DPlayer.min.js"></script>
+  <script src="client.js"></script>
+  <script>
+    var selector = document.querySelector("#font-selector")
+    var old_selector = document.querySelector("#old-selector")
+    window.onload = function () {
+      
+      if (localStorage.getItem("index")) {
+        selector.selectedIndex = parseInt(localStorage.getItem('index'))
+        var index = selector.selectedIndex
+        var value = selector.options[index].value
+        //document.querySelector('.message').style.fontSize = value
+        document.querySelectorAll('#messages').forEach(function (ele) {
+          ele.className = '';
+          ele.classList.add('message')
+          ele.classList.add(value)
+          console.log(ele)
+        });
+      }
+      if (localStorage.getItem("old_index")) {
+        old_selector.selectedIndex = parseInt(localStorage.getItem('old_index'))
+      }
+    }
+    
+    
+    selector.addEventListener('change', function () {
+      var index = selector.selectedIndex
+      var value = selector.options[index].value
+      //document.querySelector('.message').style.fontSize = value
+      document.querySelectorAll('#messages').forEach(function (ele) {
+        ele.className = '';
+        ele.classList.add('message')
+        ele.classList.add(value)
+        console.log(ele)
+      });
+      localStorage.setItem('index', index)
+      window.scrollTo(0, document.body.scrollHeight);
+    })
+
+    old_selector.addEventListener('change', function () {
+      var index = old_selector.selectedIndex
+      var value = old_selector.options[index].value
+      localStorage.setItem('oldnum', value)
+      localStorage.setItem('old_index', index)
+    })
+
+    //上传图片
+    /*
+    layui.use('upload', function(){
+      var upload = layui.upload;
+      
+      //执行实例
+      var uploadInst = upload.render({
+        elem: '#send-img' //绑定元素
+        ,url: '/upload/' //上传接口
+        ,done: function(res){
+          //上传完毕回调
+        }
+        ,error: function(){
+          //请求异常回调
+        }
+      });
+    });
+    */
+  </script>
+
+
+</body>
+
+</html>
